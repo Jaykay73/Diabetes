@@ -1,0 +1,52 @@
+project:
+  name: diabetic-retinopathy-grading
+  seed: 42
+  output_dir: reports
+
+data:
+  raw_dir: data/raw/aptos2019
+  train_csv: data/raw/aptos2019/train.csv
+  test_csv: data/raw/aptos2019/test.csv
+  train_image_dir: data/raw/aptos2019/train_images
+  test_image_dir: data/raw/aptos2019/test_images
+  processed_dir: data/processed/aptos2019
+  external_2015_dir: data/external/kaggle_dr_2015
+  image_extension: png
+  num_classes: 5
+
+eda:
+  figures_dir: reports/figures
+  quality_dir: reports/quality
+  duplicate_hash_size: 16
+  black_mean_threshold: 8.0
+  black_std_threshold: 5.0
+  low_contrast_std_threshold: 18.0
+  sample_images_per_class: 5
+
+preprocessing:
+  image_size: 512
+  ben_graham_sigma_divisor: 30
+  circle_crop: true
+  clahe_clip_limit: 2.0
+  clahe_tile_grid_size: [8, 8]
+
+training:
+  folds: 5
+  fold: 0
+  batch_size: 8
+  num_workers: 4
+  epochs: 25
+  lr: 0.0002
+  weight_decay: 0.00001
+  warmup_epochs: 2
+  gradient_clip_norm: 1.0
+  mixed_precision: true
+  early_stopping_patience: 6
+  metric: qwk
+
+model:
+  architecture: tf_efficientnet_b4_ns
+  pretrained: true
+  num_classes: 5
+  dropout: 0.3
+  task: regression
