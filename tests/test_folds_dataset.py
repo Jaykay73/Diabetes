@@ -2,7 +2,10 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 from PIL import Image
+
+pytest.importorskip("torch")
 
 from dr_grading.data.dataset import RetinopathyDataset, compute_class_weights
 from dr_grading.data.folds import create_stratified_folds

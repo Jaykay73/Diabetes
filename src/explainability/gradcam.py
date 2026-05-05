@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Literal
 
 import cv2
 import numpy as np
@@ -216,3 +216,99 @@ class GradCAMExplainer:
             overlay_original=overlay_cam(original_image, heatmap, alpha=opacity),
             overlay_preprocessed=overlay_cam(preprocessed_image, heatmap, alpha=opacity),
         )
+
+
+CAMMethod = Literal["gradcam", "gradcam++", "eigencam", "scorecam", "layercam", "ablationcam"]
+
+
+class CAMVariantExplainer(GradCAMExplainer):
+    """CAM explainer supporting common pytorch-grad-cam variants."""
+
+    def __init__(
+        self,
+        model: nn.Module,
+        arch_name: str,
+        method: CAMMethod = "gradcam",
+        target_layer: nn.Module | None = None,
+        reshape_transform: Callable[[torch.Tensor], torch.Tensor] | None = None,
+        device: torch.device | None = None,
+    ) -> None:
+        super().__init__(
+            model=model,
+            arch_name=arch_name,
+            target_layer=target_layer,
+            reshape_transform=reshape_transform,
+            device=device,
+        )
+        self.method = method
+
+    def _build_cam(self) -> object:
+        try:
+            from pytorch_grad_cam import (
+                AblationCAM,
+                EigenCAM,
+                GradCAM,
+                GradCAMPlusPlus,
+                LayerCAM,
+                ScoreCAM,
+            )
+        except ImportError as exc:
+            raise ImportError(
+                "grad-cam is required for CAMVariantExplainer. "
+                "Install dependencies with `pip install -r requirements.txt`."
+            ) from exc
+
+        registry = {
+            "gradcam": GradCAM,
+            "gradcam++": GradCAMPlusPlus,
+            "eigencam": EigenCAM,
+            "scorecam": ScoreCAM,
+            "layercam": LayerCAM,
+            "ablationcam": AblationCAM,
+        }
+        cam_cls = registry[self.method]
+        return cam_cls(
+            model=self.model,
+            target_layers=[self.target_layer],
+            reshape_transform=self.reshape_transform,
+        )
+
+
+def build_multiclass_cam_grid(
+    explainer: GradCAMExplainer,
+    image_tensor: torch.Tensor,
+    original_image: np.ndarray,
+    preprocessed_image: np.ndarray,
+    opacity: float = 0.35,
+) -> Image.Image:
+    """Generate a 1x5 grid of CAM overlays for grades 0 through 4."""
+
+    overlays: list[np.ndarray] = []
+    for grade in range(5):
+        result = explainer.explain(
+            image_tensor=image_tensor,
+            original_image=original_image,
+            preprocessed_image=preprocessed_image,
+            target_category=grade,
+            regression=False,
+            opacity=opacity,
+        )
+        overlays.append(np.asarray(result.overlay_preprocessed))
+
+    height, width = overlays[0].shape[:2]
+    title_height = max(28, height // 12)
+    canvas = np.full((height + title_height, width * 5, 3), 255, dtype=np.uint8)
+    for grade, overlay in enumerate(overlays):
+        x0 = grade * width
+        canvas[title_height:, x0 : x0 + width] = overlay
+        cv2.putText(
+            canvas,
+            f"Grade {grade}",
+            (x0 + 10, max(20, title_height - 8)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            max(0.45, width / 600),
+            (20, 20, 20),
+            thickness=1,
+            lineType=cv2.LINE_AA,
+        )
+    return Image.fromarray(canvas)

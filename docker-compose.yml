@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DR_MODEL_CHECKPOINT: /app/models/checkpoints/model.pth
+      DR_MODEL_ARCH: tf_efficientnet_b4_ns
+      DR_MODEL_TASK: regression
+      DR_IMAGE_SIZE: 512
+    volumes:
+      - ./models:/app/models:ro
+    ports:
+      - "8000:8000"
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: streamlit_app/Dockerfile
+    environment:
+      DR_API_URL: http://api:8000
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"

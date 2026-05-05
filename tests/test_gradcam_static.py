@@ -1,4 +1,7 @@
 import numpy as np
+import pytest
+
+pytest.importorskip("torch")
 
 from explainability.gradcam import normalize_heatmap
 
