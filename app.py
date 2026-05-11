@@ -197,7 +197,7 @@ st.markdown(
     
     /* Streamlit elements overrides */
     [data-testid="stSidebar"] {
-        background-color: #ffffff;
+        background-color: #f4f7f9;
         border-right: 1px solid #e2e8f0;
     }
     .stFileUploader > div > div {
@@ -459,7 +459,7 @@ st.markdown(
     <div class="hero">
         <h1>Diabetic Retinopathy AI Screening</h1>
         <p>
-            Experience state-of-the-art Deep Learning for medical imaging. Upload a retinal fundus image, and our model will predict the Diabetic Retinopathy grade, provide confidence distributions, and generate a visual explainability map.
+            Experience state-of-the-art Deep Learning for medical imaging. Upload a retinal fundus image, and our model will predict the Diabetic Retinopathy grade, provide confidence distributio[...]
         </p>
     </div>
     """,
