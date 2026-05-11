@@ -197,7 +197,7 @@ st.markdown(
     
     /* Streamlit elements overrides */
     [data-testid="stSidebar"] {
-        background-color: #94a3b8;
+        background-color: #111111;
         border-right: 1px solid #e2e8f0;
     }
     .stFileUploader > div > div {
