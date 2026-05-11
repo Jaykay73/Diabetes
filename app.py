@@ -424,8 +424,8 @@ def probability_chart(probs):
 # Sidebar
 # ==============================
 with st.sidebar:
-  st.image("https://img.icons8.com/color/96/ophthalmology.png", width=72)
-  st.title("DR Classifier")
+    st.image("https://img.icons8.com/color/96/ophthalmology.png", width=72)
+    st.title("DR Classifier")
     st.markdown("### Model settings")
     model_path = st.text_input(
     "Model path",
