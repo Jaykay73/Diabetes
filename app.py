@@ -423,32 +423,32 @@ def probability_chart(probs):
 # ==============================
 # Sidebar
 # ==============================
-# with st.sidebar:
-#     st.image("https://img.icons8.com/color/96/ophthalmology.png", width=72)
-#     st.title("DR Classifier")
-st.markdown("### Model settings")
-model_path = st.text_input(
-"Model path",
-value=MODEL_PATH_DEFAULT,
- help="Put your .pth file in the same folder as app.py, or enter the full path."
+with st.sidebar:
+  st.image("https://img.icons8.com/color/96/ophthalmology.png", width=72)
+  st.title("DR Classifier")
+    st.markdown("### Model settings")
+    model_path = st.text_input(
+    "Model path",
+    value=MODEL_PATH_DEFAULT,
+    help="Put your .pth file in the same folder as app.py, or enter the full path."
+        )
+    show_gradcam = st.checkbox("Show Grad-CAM explainability", value=True)
+    show_preprocessed = st.checkbox("Show preprocessed image", value=True)
+
+    st.markdown("---")
+    st.markdown(
+        """
+        **Classes**
+        - 0: No DR
+        - 1: Mild
+        - 2: Moderate
+        - 3: Severe
+        - 4: Proliferative
+        """
     )
-show_gradcam = st.checkbox("Show Grad-CAM explainability", value=True)
-show_preprocessed = st.checkbox("Show preprocessed image", value=True)
 
-#     st.markdown("---")
-#     st.markdown(
-#         """
-#         **Classes**
-#         - 0: No DR
-#         - 1: Mild
-#         - 2: Moderate
-#         - 3: Severe
-#         - 4: Proliferative
-#         """
-#     )
-
-#     st.markdown("---")
-#     st.caption(f"Running on: {DEVICE}")
+    st.markdown("---")
+    st.caption(f"Running on: {DEVICE}")
 
 
 # ==============================
