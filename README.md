@@ -1,56 +1,32 @@
-# Diabetic Retinopathy Grading
 
-Production-grade PyTorch pipeline for APTOS 2019 Blindness Detection diabetic retinopathy grading.
+# Diabetic Retinopathy Streamlit Demo
 
-## Phase 1 Structure
+## Files needed
 
-```text
-.
-├── api/
-├── configs/
-│   └── config.yaml
-├── data/
-│   ├── external/
-│   ├── interim/
-│   ├── processed/
-│   └── raw/
-│       └── aptos2019/
-├── models/
-│   └── checkpoints/
-├── notebooks/
-├── reports/
-│   ├── figures/
-│   └── quality/
-├── scripts/
-│   └── run_eda.py
-├── src/
-│   └── dr_grading/
-│       ├── config.py
-│       ├── data/
-│       │   ├── eda.py
-│       │   └── quality.py
-│       └── utils/
-│           └── logging.py
-├── streamlit_app/
-└── tests/
-```
-
-Expected raw APTOS layout:
+Put these files in one folder:
 
 ```text
-data/raw/aptos2019/
-├── train.csv
-├── test.csv
-├── train_images/
-│   └── <id_code>.png
-└── test_images/
-    └── <id_code>.png
+dr_streamlit_app/
+├── app.py
+├── best_model_phase1 (1).pth
+└── requirements.txt
 ```
 
-Run Phase 1 EDA:
+## Install dependencies
 
 ```bash
-python scripts/run_eda.py --config configs/config.yaml
+pip install -r requirements.txt
 ```
 
-Outputs are written to `reports/figures/` and `reports/quality/`.
+## Run the app
+
+```bash
+streamlit run app.py
+```
+
+## Notes
+
+- The app uses the same EfficientNet-B0 architecture as the training script.
+- The model is loaded with `pretrained=False` because you are loading your trained `.pth` weights.
+- The expected image size is 384×384.
+- The app includes Ben Graham preprocessing and Grad-CAM explainability.
