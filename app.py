@@ -1,7 +1,6 @@
 
 # app.py
 # Professional Streamlit app for Diabetic Retinopathy classification
-# Model expected: best_model_phase1 (1).pth or another .pth trained with the same DRClassifier architecture
 
 import io
 import os
@@ -60,7 +59,7 @@ RISK_LEVELS = {
     4: ("Critical Risk", "#7f1d1d")
 }
 
-MODEL_PATH_DEFAULT = "best_model_final.pth"
+MODEL_PATH_DEFAULT = "best_model_final (1).pth"
 
 
 # ==============================
