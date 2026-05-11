@@ -426,16 +426,14 @@ def probability_chart(probs):
 # with st.sidebar:
 #     st.image("https://img.icons8.com/color/96/ophthalmology.png", width=72)
 #     st.title("DR Classifier")
-
-#     st.markdown("### Model settings")
-#     model_path = st.text_input(
-#         "Model path",
-#         value=MODEL_PATH_DEFAULT,
-#         help="Put your .pth file in the same folder as app.py, or enter the full path."
-#     )
-
-#     show_gradcam = st.checkbox("Show Grad-CAM explainability", value=True)
-#     show_preprocessed = st.checkbox("Show preprocessed image", value=True)
+st.markdown("### Model settings")
+model_path = st.text_input(
+"Model path",
+value=MODEL_PATH_DEFAULT,
+ help="Put your .pth file in the same folder as app.py, or enter the full path."
+    )
+show_gradcam = st.checkbox("Show Grad-CAM explainability", value=True)
+show_preprocessed = st.checkbox("Show preprocessed image", value=True)
 
 #     st.markdown("---")
 #     st.markdown(
