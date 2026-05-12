@@ -59,7 +59,7 @@ RISK_LEVELS = {
     4: ("Critical Risk", "#7f1d1d")
 }
 
-MODEL_PATH_DEFAULT = "best_model_final (1).pth"
+MODEL_PATH_DEFAULT = "Diabetes.pth"
 
 
 # ==============================
